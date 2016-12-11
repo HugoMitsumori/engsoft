@@ -1,0 +1,10 @@
+%h1 Update your tracking
+
+.row
+  .col-md-6
+    = form_tag watching_path(@watching), :method => :put do
+
+      = select :watching, 'status', options_for_select([["Want to watch"],["Currently watching"], ["Watched"]], @watching.status), :class => 'form-control'
+      = label :watching, @watching.show.title
+
+      = submit_tag 'Save changes', :class => 'btn btn-primary'

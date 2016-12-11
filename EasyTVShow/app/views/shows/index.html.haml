@@ -5,14 +5,20 @@
     %tr
       %th Title
       %th Release
-      %th Description
+      %tr
+      %th 
 
   %tbody
     - @shows.each do |show|
       %tr
         %td= link_to show.title, show
         %td= show.release
-        %td= show.description
+        %td= track_status(show)
+        %td
+          -if tracking?(show)
+            =link_to 'Change Tracking', edit_watching_path(watching_show(show)), :class => "btn btn-success btn-whitelink"
+          -else
+            =link_to 'Track', new_watching_path(:show=>show), :class => "btn btn-primary btn-whitelink"
 %br
 
 = link_to 'New Show', new_show_path

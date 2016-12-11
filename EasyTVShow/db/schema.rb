@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161211031434) do
+ActiveRecord::Schema.define(version: 20161211043840) do
 
   create_table "relationships", force: :cascade do |t|
     t.integer  "follower_id"
@@ -38,6 +38,16 @@ ActiveRecord::Schema.define(version: 20161211031434) do
     t.string   "remember_digest"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+  end
+
+  create_table "watchings", force: :cascade do |t|
+    t.integer  "watcher_id"
+    t.integer  "show_id"
+    t.string   "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["show_id"], name: "index_watchings_on_show_id"
+    t.index ["watcher_id"], name: "index_watchings_on_watcher_id"
   end
 
 end

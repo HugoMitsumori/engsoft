@@ -1,0 +1,11 @@
+%h1 Track Show
+
+.row
+  .col-md-6
+    = form_tag watchings_path(show: @show) do
+
+      
+      = select :watching, 'status', options_for_select([["Want to watch"],["Currently watching"], ["Watched"]]), :class => 'form-control'
+      = label :watching, @show.title
+      %br
+      = submit_tag 'Track', :class => 'btn btn-primary'

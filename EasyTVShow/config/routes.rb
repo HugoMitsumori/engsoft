@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     get :following
   end
   resources :relationships
+  resources :watchings
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root :to => 'home#index'
   get 'signup' => 'users#new'

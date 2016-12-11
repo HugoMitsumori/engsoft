@@ -21,6 +21,9 @@ class ShowsController < ApplicationController
   def edit
   end
 
+  def tracking?
+
+  end
   # POST /shows
   # POST /shows.json
   def create
