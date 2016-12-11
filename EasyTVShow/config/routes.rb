@@ -1,6 +1,18 @@
 Rails.application.routes.draw do
-  resources :shows
+  resources :solutions
+  resources :services
+  resources :contractors
+  resources :tests
+  resources :certificates
+  resources :proposals
   resources :users
+  resources :followers
+  resources :issues
+  resources :freelancers
+  resources :companies
+  resources :knowledges
+  resources :required_knowledges
+  resources :freelancer_knowledges
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root :to => 'home#index'
   get 'signup' => 'users#new'

@@ -1,0 +1,68 @@
+%p
+  %b User:
+  = link_to User.find(@service.user_id).login, user_path(@service.user_id)
+%p
+  %b Service name:
+  = @service.service_name
+%p
+  %b Start date:
+  = @service.start_date
+%p
+  %b End date:
+  = @service.end_date
+%p
+  %b Status:
+  = @service.status
+%p
+  %b Price:
+  = @service.price
+%p
+  %b Final score:
+  = @service.final_score
+
+- if !@acceptedSolutions.empty?
+  %h1 Listing all accepted solutions for this service
+  %table.table
+    %thead
+      %tr
+        %th Solution
+        %th User
+        %th Description
+        %th
+
+    %tbody
+      - @acceptedSolutions.each do |solution|
+        %tr
+          %td= solution.id
+          %td= link_to User.find(solution.user_id).login, user_path(solution.user_id)
+          %td= solution.description
+          %td= link_to 'Show', solution
+
+- if !@solutions.empty?
+  %h1 Listing all proposed solutions for this service
+  %table.table
+    %thead
+      %tr
+        %th Solution
+        %th User
+        %th Description
+        %th        
+        - if @imOwner
+          %th
+
+    %tbody
+      - @solutions.each do |solution|
+        %tr
+          %td= solution.id
+          %td= link_to User.find(solution.user_id).login, user_path(solution.user_id)
+          %td= solution.description
+          %td= link_to 'Show', solution  
+          - if @imOwner and !solution.accepted     
+            %td= link_to 'Accept Solution', :controller => :solutions, :action => :accept, :id => solution.id
+
+= link_to 'Submit solution', new_solution_path(@service)
+\|
+-if @service.user_id == @current_user.id
+  = link_to 'Edit', edit_service_path(@service)
+\|
+= link_to 'Back', services_path

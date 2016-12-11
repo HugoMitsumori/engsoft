@@ -1,5 +1,5 @@
 %h1
-  EasyTVShow
+  Objective Hiring
   - if logged_in?
     %a{"data-toggle" => "collapse", href: "#top"}
       %span.text-muted(class="glyphicon glyphicon-home")
@@ -7,4 +7,13 @@
   %ul.list-group
     %li.list-group-item.disabled
       %h5 Activities
-    
+    - @recent_services.each do |service|
+      %li.list-group-item
+        =link_to service.creator.name, user_individual_path(:user=>service.creator.login)
+        created the service 
+        =link_to service.name, service_graph_path(:service=>service.code)
+
+
+
+- if logged_in?
+  = render :partial => 'timeline'

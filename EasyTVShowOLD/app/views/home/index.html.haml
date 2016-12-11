@@ -1,0 +1,10 @@
+%h1
+  EasyTVShow
+  - if logged_in?
+    %a{"data-toggle" => "collapse", href: "#top"}
+      %span.text-muted(class="glyphicon glyphicon-home")
+%div{:id => "top"}
+  %ul.list-group
+    %li.list-group-item.disabled
+      %h5 Activities
+    

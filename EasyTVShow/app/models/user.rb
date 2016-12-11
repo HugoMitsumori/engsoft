@@ -1,4 +1,5 @@
-class User < ApplicationRecord
+class User < ActiveRecord::Base
+
   attr_accessor :remember_token
 
   has_many :services
@@ -10,8 +11,17 @@ class User < ApplicationRecord
   validates :email, presence: true, length: {maximum: 255 },
             format: { with: VALID_EMAIL_REGEX },
             uniqueness: { case_sensitive: false }
+  validates :cpf, presence: true, uniqueness: {case_sensitive:false}
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }
+
+
+  def follows? (user)
+    @individual_self = Individual.find_by(login: self.login)
+    @individual_user = Individual.find_by(login: user.login)
+    return @individual_self.followeds.include?(@individual_user)
+  end
+
 
   # Returns the hash digest of the given string.
   def User.digest(string)
@@ -45,4 +55,21 @@ class User < ApplicationRecord
   def forget
     update_attribute(:remember_digest, nil)
   end
+
+
+  def timeline
+    timeline_list = Array.new
+    # followed_avaliations.each do |avaliation|
+    #   timeline_list << avaliation
+    # end
+
+    # followed_recommendations.each do |recommendation|
+    #   timeline_list  << recommendation
+    # end
+
+    # followed_commentaries.each do |commentary|
+    #   timeline_list  << commentary
+    # end
+    # timeline_list.sort {|x,y| y.updated_at <=> x.updated_at}
+  end  
 end
