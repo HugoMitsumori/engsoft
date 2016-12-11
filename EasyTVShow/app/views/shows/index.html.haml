@@ -1,0 +1,18 @@
+%h1 Listing shows
+
+%table.table
+  %thead
+    %tr
+      %th Title
+      %th Release
+      %th Description
+
+  %tbody
+    - @shows.each do |show|
+      %tr
+        %td= link_to show.title, show
+        %td= show.release
+        %td= show.description
+%br
+
+= link_to 'New Show', new_show_path

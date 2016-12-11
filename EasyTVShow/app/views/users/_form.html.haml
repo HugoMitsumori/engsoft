@@ -1,0 +1,21 @@
+= form_for @user do |f|
+  .field
+    = f.label :login
+    = f.text_field :login
+  .field
+    = f.label "Password"
+    = f.password_field :password
+  .field
+    = f.label "Password Confirmation"
+    = f.password_field :password_confirmation
+  .field
+    = f.label :email
+    = f.text_field :email
+  .field
+    = f.label :name
+    = f.text_field :name
+  .field
+    = f.label :birthdate
+    = f.date_select :birthdate
+  .actions
+    = f.submit 'Create', :class => "btn btn-primary"

@@ -22,8 +22,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-    if @user.save    
-      Individual.create({:login => @user.login, :name => @user.name}).save 
+    if @user.save  
       log_in @user
       flash[:notice] = "#{@user.name}, welcome to Objective Hiring"
       redirect_to user_path @user
@@ -45,9 +44,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-    @individual = Individual.find_by(login: @user.login)
     @user.destroy
-    @individual.destroy
     flash[:notice] = "#{@user.name} deleted"
     redirect_to root_path
   end
@@ -58,11 +55,6 @@ class UsersController < ApplicationController
     else
       User.all
     end
-  end  
-
-  def individual
-    @user = User.find_by(login: params[:user])
-    redirect_to user_path(@user)
   end
 
   def follow
@@ -104,7 +96,7 @@ class UsersController < ApplicationController
   private
     def user_params
       params.require(:user).permit(:login, :name, :email,
-                            :password, :password_confirmation, :cpf, :profession, :age)
+                            :password, :password_confirmation, :birthdate)
     end
 
     def correct_user

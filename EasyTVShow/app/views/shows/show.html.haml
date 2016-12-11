@@ -1,0 +1,13 @@
+%p
+  %b Title:
+  = @show.title
+%p
+  %b Release:
+  = @show.release
+%p
+  %b Description:
+  = @show.description
+
+= link_to 'Edit', edit_show_path(@show)
+\|
+= link_to 'Back', shows_path

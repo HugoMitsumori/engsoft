@@ -22,16 +22,9 @@
   =@user.name
 
 %p
-  %strong CPF:
-  =@user.cpf
+  %strong Birthdate:
+  =@user.birthdate
 
-%p
-  %strong Age:
-  =@user.age
-
-%p
-  %strong Profession:
-  =@user.profession
 -if @current_user == @user
   =link_to 'Edit', edit_user_path(@user)
 = link_to 'Back', users_path

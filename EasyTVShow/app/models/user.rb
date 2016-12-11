@@ -11,7 +11,6 @@ class User < ActiveRecord::Base
   validates :email, presence: true, length: {maximum: 255 },
             format: { with: VALID_EMAIL_REGEX },
             uniqueness: { case_sensitive: false }
-  validates :cpf, presence: true, uniqueness: {case_sensitive:false}
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }
 
@@ -55,21 +54,4 @@ class User < ActiveRecord::Base
   def forget
     update_attribute(:remember_digest, nil)
   end
-
-
-  def timeline
-    timeline_list = Array.new
-    # followed_avaliations.each do |avaliation|
-    #   timeline_list << avaliation
-    # end
-
-    # followed_recommendations.each do |recommendation|
-    #   timeline_list  << recommendation
-    # end
-
-    # followed_commentaries.each do |commentary|
-    #   timeline_list  << commentary
-    # end
-    # timeline_list.sort {|x,y| y.updated_at <=> x.updated_at}
-  end  
 end
