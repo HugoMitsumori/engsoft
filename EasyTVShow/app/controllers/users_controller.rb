@@ -2,35 +2,40 @@ class UsersController < ApplicationController
   skip_before_filter :set_current_user, only: [:new, :create]
   before_filter :correct_user, only: [:edit, :update, :destroy]
 
-
   def index
     @users = search(params[:search])
   end
-
 
   def show
     @user = User.find(params[:id])
   end
 
-
   def new
     @user = User.new
   end
 
-
-  # POST /users
-  # POST /users.json
   def create
     @user = User.new(user_params)
-    if @user.save  
+    if @user.save     
       log_in @user
-      flash[:notice] = "#{@user.name}, welcome to Objective Hiring"
+      flash[:notice] = "#{@user.name}, welcome to JellyRating"
       redirect_to user_path @user
     else
       flash[:warning] = @user.errors.full_messages
       render 'new'
     end
+  end
 
+  def followers
+    @user = User.find_by_id(params[:user_id])    
+  end
+
+  def following
+    @user = User.find_by_id(params[:user_id])
+  end
+
+  def edit
+    @user = User.find(params[:id])
   end
 
   def update
@@ -55,43 +60,19 @@ class UsersController < ApplicationController
     else
       User.all
     end
+  end  
+
+  helper_method :follows?
+  def follows? (user_id)
+    @follower = User.find_by_id @current_user
+    @followed = User.find_by_id user_id
+    @relationship = Relationship.where(follower: @follower, followed: @followed)
+    if @relationship.length==0    
+      return -1
+    else return @relationship[0].id
+    end
   end
 
-  def follow
-    @user = User.find_by_id @current_user.id
-    @followed = User.find_by_id params[:followed]
-    @individual_user = Individual.find_by(login: @user.login)
-    @individual_followed = Individual.find_by(login: @followed.login)
-    @individual_user.followeds << @individual_followed
-    redirect_to (:back)
-  end
-
-  def unfollow
-    @user = User.find_by_id @current_user.id
-    @followed = User.find_by_id params[:followed]
-    @individual_user = Individual.find_by(login: @user.login)
-    @individual_followed = Individual.find_by(login: @followed.login)
-    @individual_user.followeds(:individual, :rel).match_to(@individual_followed).delete_all(:rel)
-    redirect_to (:back)
-  end
-
-
-  def followers
-    @user = User.find_by_id(params[:user_id])    
-    @individual = Individual.find_by(login: @user.login)
-    @followers = @individual.followers
-  end
-
-  def following
-    @user = User.find_by_id(params[:user_id])
-    @individual = Individual.find_by(login: @user.login)
-    @followers = @individual.followeds
-  end
-
-  def related
-    @individual = Individual.find_by(login: @user.login)
-    @user_solutions = SolutionGraph.find_by(creator: @individual)
-  end
 
   private
     def user_params

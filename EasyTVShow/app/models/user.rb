@@ -13,12 +13,30 @@ class User < ActiveRecord::Base
             uniqueness: { case_sensitive: false }
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }
+  has_many :follows, class_name: "Relationship", foreign_key: "followed_id"
+  has_many :followings, class_name: "Relationship", foreign_key: "follower_id"
+  has_many :followers, through: :follows, source: :follower
+  has_many :followed, through: :followings, source: :followed
 
+
+  def relationships
+    @relationships = Array.new
+    self.follows.each do |follow|
+      @relationships.push follow
+    end
+    self.followings.each do |following|
+      @relationships.push following
+    end
+    return @relationships
+  end
+
+  def followship(user)
+    @relationship = Relationship.where(:follower=>self, :followed=>user).first
+  end
 
   def follows? (user)
-    @individual_self = Individual.find_by(login: self.login)
-    @individual_user = Individual.find_by(login: user.login)
-    return @individual_self.followeds.include?(@individual_user)
+    @relationship = Relationship.where(follower: self, followed: user)
+    return @relationship.length!=0        
   end
 
 
@@ -32,10 +50,6 @@ class User < ActiveRecord::Base
   # Returns a random token.
   def User.new_token
     SecureRandom.urlsafe_base64
-  end
-
-  def individual
-    return Individual.find_by(login: self.login)
   end
 
   # Remembers a user in the database for use in persistent sessions.
