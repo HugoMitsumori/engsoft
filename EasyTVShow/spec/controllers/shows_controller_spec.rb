@@ -24,17 +24,28 @@ RSpec.describe ShowsController, type: :controller do
   # Show. As you add validations to Show, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {title: "Test show",
+    release: Date.new(2112, 12, 12),
+    description: "Test"}
   }
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  before(:all) do
+    @user = User.where(login: "test").first
+    if(@user == nil)
+      @user = User.create!({
+        login: "test",
+        email: "test@test.com",
+        name: "test",
+        birthdate: Date.new(2112, 12, 12),
+        password: "testtest"
+      })
+    end
+  end
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # ShowsController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  let(:valid_session) { {user_id: @user.id} }
 
   describe "GET #index" do
     it "assigns all shows as @shows" do
@@ -86,74 +97,5 @@ RSpec.describe ShowsController, type: :controller do
         expect(response).to redirect_to(Show.last)
       end
     end
-
-    context "with invalid params" do
-      it "assigns a newly created but unsaved show as @show" do
-        post :create, params: {show: invalid_attributes}, session: valid_session
-        expect(assigns(:show)).to be_a_new(Show)
-      end
-
-      it "re-renders the 'new' template" do
-        post :create, params: {show: invalid_attributes}, session: valid_session
-        expect(response).to render_template("new")
-      end
-    end
   end
-
-  describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-
-      it "updates the requested show" do
-        show = Show.create! valid_attributes
-        put :update, params: {id: show.to_param, show: new_attributes}, session: valid_session
-        show.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "assigns the requested show as @show" do
-        show = Show.create! valid_attributes
-        put :update, params: {id: show.to_param, show: valid_attributes}, session: valid_session
-        expect(assigns(:show)).to eq(show)
-      end
-
-      it "redirects to the show" do
-        show = Show.create! valid_attributes
-        put :update, params: {id: show.to_param, show: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(show)
-      end
-    end
-
-    context "with invalid params" do
-      it "assigns the show as @show" do
-        show = Show.create! valid_attributes
-        put :update, params: {id: show.to_param, show: invalid_attributes}, session: valid_session
-        expect(assigns(:show)).to eq(show)
-      end
-
-      it "re-renders the 'edit' template" do
-        show = Show.create! valid_attributes
-        put :update, params: {id: show.to_param, show: invalid_attributes}, session: valid_session
-        expect(response).to render_template("edit")
-      end
-    end
-  end
-
-  describe "DELETE #destroy" do
-    it "destroys the requested show" do
-      show = Show.create! valid_attributes
-      expect {
-        delete :destroy, params: {id: show.to_param}, session: valid_session
-      }.to change(Show, :count).by(-1)
-    end
-
-    it "redirects to the shows list" do
-      show = Show.create! valid_attributes
-      delete :destroy, params: {id: show.to_param}, session: valid_session
-      expect(response).to redirect_to(shows_url)
-    end
-  end
-
 end

@@ -1,9 +1,0 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  knowledge_name: MyString
-  service_code: 1
-
-two:
-  knowledge_name: MyString
-  service_code: 1
